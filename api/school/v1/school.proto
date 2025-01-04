@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package api.school.v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// 第一个user是go module名称，第二个user是服务名称，v1是版本号
+option go_package = "school/api/school/v1;v1";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "localhost:8080"
+  base_path: ""
+  info: {
+    title: "user api docs";
+    version: "2.0";
+  };
+  schemes: HTTP;
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service user {
+  // Login 登录注释
+  rpc Login(LoginRequest) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/api/v1/login"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "登录",
+      description: "使用邮箱登录",
+    };
+
+  }
+  rpc Hello(HelloRequest) returns (HelloReply){
+    option (google.api.http) = {
+      get: "/api/v1/hello"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "hello",
+      description: "hello",
+    };
+  }
+
+  // 注意：下面两类rpc会被忽略生成http相关代码
+  //    1. 在rpc没有设置google.api.http，例如 SayHi
+  //    2. rpc属于stream类型，例如 ClientSteam、ServerSteam、BidiSteam
+
+  //rpc SayHi(HelloRequest) returns (HelloReply) {}
+  //rpc ClientSteam(stream HelloRequest) returns (HelloReply) {}
+  //rpc ServerSteam(HelloRequest) returns (stream HelloReply) {}
+  //rpc BidiSteam(stream HelloRequest) returns (stream HelloReply) {}
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginReply {
+  string token = 1;
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string msg = 1;
+}
