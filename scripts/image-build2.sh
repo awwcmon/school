@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # two-stage build docker image
-
+tar cvf scripts/school.tar.gz .
 serverName="school"
 # image name of the service, prohibit uppercase letters in names.
 IMAGE_NAME="sheer/school"

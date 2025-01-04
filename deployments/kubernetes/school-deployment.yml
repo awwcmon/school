@@ -1,13 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: school-dm
-  namespace: school
+  name: school
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: school
+  serviceName: school-svc
   template:
     metadata:
       name: school-pod
@@ -18,7 +19,7 @@ spec:
         - name: school
           image: sheer/school:latest
           # If using a local image, use Never, default is Always
-          #imagePullPolicy: Never
+          imagePullPolicy: Always
           command: ["./school", "-c", "/app/configs/school.yml"]
           resources:
             requests:
@@ -29,7 +30,7 @@ spec:
               memory: 1000Mi
           volumeMounts:
             - name: school-vl
-              mountPath: /app/configs/
+              mountPath: /app/configs
               readOnly: true
 
           ports:

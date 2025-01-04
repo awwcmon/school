@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: school-svc
-  namespace: school
+  namespace: default
 spec:
   selector:
     app: school

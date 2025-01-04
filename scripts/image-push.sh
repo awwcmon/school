@@ -28,11 +28,9 @@ function checkResult() {
 # image repository host, https://index.docker.io/v1 is the official docker image repository
 IMAGE_REPO_HOST="https://index.docker.io/v1"
 # check if you are authorized to log into docker
-function checkLogin() {
-  echo "haha"
-}
-
-checkLogin
+#function checkLogin() {}
+#
+#checkLogin
 
 # push image to image repository
 echo "docker push ${IMAGE_NAME_TAG}"

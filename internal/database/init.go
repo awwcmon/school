@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"strings"
 	"sync"
 
@@ -17,6 +18,9 @@ var (
 // InitDB connect database
 func InitDB() {
 	dbDriver := config.Get().Database.Driver
+	fmt.Println("----------------")
+	fmt.Println(dbDriver, config.Get().Database.Mongodb.Dsn)
+	fmt.Println("----------------")
 	switch strings.ToLower(dbDriver) {
 	case mgo.DBDriverName:
 		mdb = InitMongodb()
