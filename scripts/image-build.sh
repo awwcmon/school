@@ -27,9 +27,9 @@ PROJECT_FILES=$(ls)
 tar zcf ${serverName}.tar.gz ${PROJECT_FILES}
 mv -f ${serverName}.tar.gz ${DOCKERFILE_PATH}
 echo "docker build --force-rm -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}"
-docker build --platform linux/arm64  --force-rm -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}
+docker build --force-rm -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}
 rm -rf ${DOCKERFILE_PATH}/${serverName}.tar.gz
-# delete none image
+# delete none imagedocker buildx imagetools inspect sheer/school:latest
 noneImages=$(docker images | grep "<none>" | awk '{print $3}')
 if [ "X${noneImages}" != "X" ]; then
   docker rmi ${noneImages} > /dev/null
