@@ -103,7 +103,7 @@ image-build-local: build
 
 .PHONY: image-build
 # Build image for remote repositories, phase II build, e.g. make image-build2 REPO_HOST=addr TAG=latest
-image-build2:
+image-build:
 	@bash scripts/image-build.sh $(REPO_HOST) $(TAG)
 
 
