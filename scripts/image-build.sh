@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# build the docker image using the binaries, if you want to reduce the size of the image,
-# use upx to compress the binaries before building the image.
-
+# two-stage build docker image
+#tar cvf scripts/school.tar.gz .
 serverName="school"
 # image name of the service, prohibit uppercase letters in names.
 IMAGE_NAME="sheer/school"
 # Dockerfile file directory
 DOCKERFILE_PATH="scripts/build"
-DOCKERFILE="${DOCKERFILE_PATH}/Dockerfile"
+DOCKERFILE="${DOCKERFILE_PATH}/Dockerfile_build"
 
 # image repo address, REPO_HOST="ip or domain", passed in via the first parameter
 REPO_HOST=$1
@@ -24,35 +23,16 @@ fi
 # image name and tag
 IMAGE_NAME_TAG="${REPO_HOST}/${IMAGE_NAME}:${TAG}"
 
-# binary executable files
-BIN_FILE="cmd/${serverName}/${serverName}"
-# configuration file directory
-CONFIG_PATH="configs"
-
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${BIN_FILE} cmd/${serverName}/*.go
-mv -f ${BIN_FILE} ${DOCKERFILE_PATH}
-mkdir -p ${DOCKERFILE_PATH}/${CONFIG_PATH} && cp -f ${CONFIG_PATH}/${serverName}.yml ${DOCKERFILE_PATH}/${CONFIG_PATH}
-
-# compressing binary file
-#cd ${DOCKERFILE_PATH}
-#upx -9 ${serverName}
-#cd -
-
-echo "docker build -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}"
-docker build -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}
-
-
-if [ -f "${DOCKERFILE_PATH}/${serverName}" ]; then
-    rm -f ${DOCKERFILE_PATH}/${serverName}
-fi
-
-if [ -d "${DOCKERFILE_PATH}/configs" ]; then
-    rm -rf ${DOCKERFILE_PATH}/configs
-fi
-
+PROJECT_FILES=$(ls)
+tar zcf ${serverName}.tar.gz ${PROJECT_FILES}
+mv -f ${serverName}.tar.gz ${DOCKERFILE_PATH}
+echo "docker build --force-rm -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}"
+docker build --platform linux/arm64  --force-rm -f ${DOCKERFILE} -t ${IMAGE_NAME_TAG} ${DOCKERFILE_PATH}
+rm -rf ${DOCKERFILE_PATH}/${serverName}.tar.gz
 # delete none image
 noneImages=$(docker images | grep "<none>" | awk '{print $3}')
 if [ "X${noneImages}" != "X" ]; then
   docker rmi ${noneImages} > /dev/null
 fi
 exit 0
+
