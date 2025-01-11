@@ -20,6 +20,8 @@ dist/
 *.iml
 *.ipr
 *.iws
+.DS_STORE
+*/.DS_STORE
 
 cmd/school/school
 
