@@ -8,6 +8,7 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
+
 	//"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 
 	schoolV1 "school/api/school/v1"
@@ -15,11 +16,20 @@ import (
 
 var _ schoolV1.FileLogicer = (*fileHandler)(nil)
 
-type fileHandler struct{}
+type fileHandler struct {
+	// example:
+	// 	fileDao dao.FileDao
+}
 
 // NewFileHandler create a handler
 func NewFileHandler() schoolV1.FileLogicer {
-	return &fileHandler{}
+	return &fileHandler{
+		// example:
+		// 	fileDao: dao.NewFileDao(
+		// 		database.GetDB(),
+		// 		cache.NewFileCache(database.GetCacheType()),
+		// 	),
+	}
 }
 
 // CreateFile ......
@@ -58,4 +68,31 @@ func (h *fileHandler) CreateFile(ctx context.Context, req *schoolV1.UploadFileRe
 		FileName: fileinfo.Name(),
 		FileSize: fileinfo.Size(),
 	}, nil
+}
+
+// DownloadFile ......
+func (h *fileHandler) DownloadFile(ctx context.Context, req *schoolV1.DownloadFileRequest) (*schoolV1.DownloadFileResponse, error) {
+	panic("implement me")
+
+	// fill in the business logic code here
+	// example:
+	//	    c, ctx := middleware.AdaptCtx(ctx)
+	//	    err := req.Validate()
+	//	    if err != nil {
+	//		    logger.Warn("req.Validate error", logger.Err(err), logger.Any("req", req), middleware.CtxRequestIDField(ctx))
+	//		    return nil, ecode.InvalidParams.Err()
+	//	    }
+	//
+	//	    reply, err := h.fileDao.DownloadFile(ctx, &model.File{
+	//     	FileId: req.FileId,
+	//     	FileName: req.FileName,
+	//     	FileSize: req.FileSize,
+	//     })
+	//	    if err != nil {
+	//			logger.Warn("DownloadFile error", logger.Err(err), middleware.CtxRequestIDField(ctx))
+	//			return nil, ecode.InternalServerError.Err()
+	//		}
+	//
+	//     return &schoolV1.DownloadFileResponse{
+	//     }, nil
 }

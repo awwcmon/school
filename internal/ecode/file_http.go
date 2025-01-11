@@ -9,11 +9,12 @@ import (
 // file business-level http error codes.
 // the fileNO value range is 1~100, if the same error code is used, it will cause panic.
 var (
-	fileNO       = 90
+	fileNO       = 15
 	fileName     = "file"
 	fileBaseCode = errcode.HCode(fileNO)
 
-	ErrCreateFileFile = errcode.NewError(fileBaseCode+1, "failed to CreateFile "+fileName)
+	ErrCreateFileFile   = errcode.NewError(fileBaseCode+1, "failed to CreateFile "+fileName)
+	ErrDownloadFileFile = errcode.NewError(fileBaseCode+2, "failed to DownloadFile "+fileName)
 
 	// error codes are globally unique, adding 1 to the previous error code
 )

@@ -31,6 +31,13 @@ service file {
       selector: "[no_bind]"
     };
   }
+  rpc DownloadFile(DownloadFileRequest) returns(DownloadFileResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/files/{fileId}"
+      body: "*" // 通常可以省略 body，使用 multipart/form-data。
+      selector: "[ctx]"
+    };
+  }
 }
 // 文件上传请求
 message UploadFileRequest {}
@@ -41,3 +48,10 @@ message UploadFileResponse {
   string fileName = 2;
   int64 fileSize = 3;
 }
+// 文件上传响应
+message DownloadFileRequest {
+  string fileId = 1;
+  string fileName = 2;
+  int64 fileSize = 3;
+}
+message DownloadFileResponse {}

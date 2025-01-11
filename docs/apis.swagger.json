@@ -60,6 +60,44 @@
         ]
       }
     },
+    "/api/v1/files/{fileId}": {
+      "post": {
+        "operationId": "file_DownloadFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DownloadFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fileDownloadFileBody"
+            }
+          }
+        ],
+        "tags": [
+          "file"
+        ]
+      }
+    },
     "/api/v1/hello": {
       "get": {
         "summary": "hello",
@@ -435,6 +473,19 @@
     }
   },
   "definitions": {
+    "fileDownloadFileBody": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "fileSize": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "文件上传响应"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -584,6 +635,9 @@
           }
         }
       }
+    },
+    "v1DownloadFileResponse": {
+      "type": "object"
     },
     "v1GetTeacherByConditionReply": {
       "type": "object",
