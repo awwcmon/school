@@ -95,12 +95,6 @@ image-build-local: build
 	@bash scripts/image-build-local.sh
 
 
-#.PHONY: image-build
-## Build image for remote repositories, use binary files to build, e.g. make image-build REPO_HOST=addr TAG=latest
-#image-build:
-#	@bash scripts/image-build.sh $(REPO_HOST) $(TAG)
-
-
 .PHONY: image-build
 # Build image for remote repositories, phase II build, e.g. make image-build2 REPO_HOST=addr TAG=latest
 image-build:
@@ -112,12 +106,10 @@ image-build:
 image-push:
 	@bash scripts/image-push.sh $(REPO_HOST) $(TAG)
 
-
-.PHONY: deploy
-# Deploy service to k8s
-deploy:
+.PHONY: helm
+# Push docker image to remote repositories, e.g. make image-push REPO_HOST=addr TAG=latest
+helm:
 	@bash scripts/deploy.sh $(CHART_REPO_NAME) $(CHART_URL) $(IMAGE_NAME) $(NAMESPACE) $(RELEASE_NAME)
-
 
 .PHONY: image-build-rpc-test
 # Build grpc test image for remote repositories, e.g. make image-build-rpc-test REPO_HOST=addr TAG=latest
