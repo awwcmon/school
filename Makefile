@@ -118,6 +118,7 @@ image-push:
 deploy:
 	@bash scripts/deploy.sh $(CHART_REPO_NAME) $(CHART_URL) $(IMAGE_NAME) $(NAMESPACE) $(RELEASE_NAME)
 
+
 .PHONY: image-build-rpc-test
 # Build grpc test image for remote repositories, e.g. make image-build-rpc-test REPO_HOST=addr TAG=latest
 image-build-rpc-test:
