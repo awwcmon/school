@@ -743,6 +743,18 @@
     },
     "v1UploadFileResponse": {
       "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "fileSize": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
       "title": "文件上传响应"
     }
   }

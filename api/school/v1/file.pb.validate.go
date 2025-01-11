@@ -159,6 +159,12 @@ func (m *UploadFileResponse) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for FileId
+
+	// no validation rules for FileName
+
+	// no validation rules for FileSize
+
 	if len(errors) > 0 {
 		return UploadFileResponseMultiError(errors)
 	}

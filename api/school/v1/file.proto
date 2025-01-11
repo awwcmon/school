@@ -23,7 +23,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   produces: "application/json;multipart/form-data";
 };
 
-service file{
+service file {
   rpc CreateFile(UploadFileRequest) returns(UploadFileResponse) {
     option (google.api.http) = {
       post: "/api/v1/files"
@@ -33,11 +33,11 @@ service file{
   }
 }
 // 文件上传请求
-message UploadFileRequest {
-
-}
+message UploadFileRequest {}
 
 // 文件上传响应
-message UploadFileResponse{
-
+message UploadFileResponse {
+  string fileId = 1;
+  string fileName = 2;
+  int64 fileSize = 3;
 }
