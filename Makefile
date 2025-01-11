@@ -113,10 +113,10 @@ image-push:
 	@bash scripts/image-push.sh $(REPO_HOST) $(TAG)
 
 
-.PHONY: deploy-k8s
+.PHONY: deploy
 # Deploy service to k8s
-deploy-k8s:
-	@bash scripts/deploy-k8s.sh
+deploy:
+	@bash scripts/deploy.sh
 
 
 .PHONY: image-build-rpc-test
