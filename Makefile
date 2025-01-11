@@ -116,14 +116,12 @@ image-push:
 .PHONY: deploy
 # Deploy service to k8s
 deploy:
-	@bash scripts/deploy.sh
-
+	@bash scripts/deploy.sh $(CHART_REPO_NAME) $(CHART_URL) $(IMAGE_NAME) $(RELEASE_NAME) $(NAMESPACE)
 
 .PHONY: image-build-rpc-test
 # Build grpc test image for remote repositories, e.g. make image-build-rpc-test REPO_HOST=addr TAG=latest
 image-build-rpc-test:
 	@bash scripts/image-rpc-test.sh $(REPO_HOST) $(TAG)
-
 
 .PHONY: patch
 # Patch some dependent code. 1. Add database initialization code, e.g. make patch TYPE=mysql, also supports mongodb, postgresql, sqlite. 2. Add dependent types.proto file, e.g. make patch TYPE=types-pb
