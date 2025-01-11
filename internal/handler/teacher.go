@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
-	"school/internal/utils"
+	schoolV1 "school/api/school/v1"
 	"strings"
 	"time"
 
@@ -13,7 +13,6 @@ import (
 	"github.com/go-dev-frame/sponge/pkg/logger"
 	"github.com/go-dev-frame/sponge/pkg/mgo/query"
 
-	schoolV1 "school/api/school/v1"
 	"school/internal/cache"
 	"school/internal/dao"
 	"school/internal/database"
@@ -48,7 +47,7 @@ func (h *teacherHandler) Create(ctx context.Context, req *schoolV1.CreateTeacher
 	}
 
 	teacher := &model.Teacher{}
-	err = copier.CopyWithOption(teacher, req, utils.CopierOption)
+	err = copier.Copy(teacher, req)
 	if err != nil {
 		return nil, ecode.ErrCreateTeacher.Err()
 	}
@@ -89,7 +88,7 @@ func (h *teacherHandler) UpdateByID(ctx context.Context, req *schoolV1.UpdateTea
 	}
 
 	teacher := &model.Teacher{}
-	err = copier.CopyWithOption(teacher, req, utils.CopierOption)
+	err = copier.Copy(teacher, req)
 	if err != nil {
 		return nil, ecode.ErrUpdateByIDTeacher.Err()
 	}
@@ -143,7 +142,7 @@ func (h *teacherHandler) List(ctx context.Context, req *schoolV1.ListTeacherRequ
 	}
 
 	params := &query.Params{}
-	err = copier.CopyWithOption(params, req.Params, utils.CopierOption)
+	err = copier.Copy(params, req.Params)
 	if err != nil {
 		return nil, ecode.ErrListTeacher.Err()
 	}
@@ -203,7 +202,7 @@ func (h *teacherHandler) GetByCondition(ctx context.Context, req *schoolV1.GetTe
 	conditions := &query.Conditions{}
 	for _, v := range req.Conditions.GetColumns() {
 		column := query.Column{}
-		_ = copier.CopyWithOption(&column, v, utils.CopierOption)
+		_ = copier.Copy(&column, v)
 		conditions.Columns = append(conditions.Columns, column)
 	}
 	err = conditions.CheckValid()
@@ -298,7 +297,7 @@ func (h *teacherHandler) ListByLastID(ctx context.Context, req *schoolV1.ListTea
 
 func convertTeacher(record *model.Teacher) (*schoolV1.Teacher, error) {
 	value := &schoolV1.Teacher{}
-	err := copier.CopyWithOption(value, record, utils.CopierOption)
+	err := copier.Copy(value, record)
 	if err != nil {
 		return nil, err
 	}

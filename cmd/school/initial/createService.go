@@ -6,7 +6,7 @@ import (
 	"school/internal/config"
 	"school/internal/server"
 
-	"github.com/zhufuyi/sponge/pkg/app"
+	"github.com/go-dev-frame/sponge/pkg/app"
 )
 
 // CreateServices create http service

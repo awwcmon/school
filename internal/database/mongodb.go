@@ -3,9 +3,9 @@ package database
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/zhufuyi/sponge/pkg/logger"
-	"github.com/zhufuyi/sponge/pkg/mgo"
-	"github.com/zhufuyi/sponge/pkg/utils"
+	"github.com/go-dev-frame/sponge/pkg/logger"
+	"github.com/go-dev-frame/sponge/pkg/mgo"
+	"github.com/go-dev-frame/sponge/pkg/utils"
 
 	"school/internal/config"
 )

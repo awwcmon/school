@@ -1,11 +1,10 @@
 package database
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 
-	"github.com/zhufuyi/sponge/pkg/mgo"
+	"github.com/go-dev-frame/sponge/pkg/mgo"
 
 	"school/internal/config"
 )
@@ -18,9 +17,6 @@ var (
 // InitDB connect database
 func InitDB() {
 	dbDriver := config.Get().Database.Driver
-	fmt.Println("----------------")
-	fmt.Println(dbDriver, config.Get().Database.Mongodb.Dsn)
-	fmt.Println("----------------")
 	switch strings.ToLower(dbDriver) {
 	case mgo.DBDriverName:
 		mdb = InitMongodb()

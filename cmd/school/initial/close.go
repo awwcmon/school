@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/zhufuyi/sponge/pkg/app"
-	"github.com/zhufuyi/sponge/pkg/logger"
-	"github.com/zhufuyi/sponge/pkg/tracer"
+	"github.com/go-dev-frame/sponge/pkg/app"
+	"github.com/go-dev-frame/sponge/pkg/logger"
+	"github.com/go-dev-frame/sponge/pkg/tracer"
 
 	"school/internal/config"
 	//"school/internal/database"

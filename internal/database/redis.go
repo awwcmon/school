@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/zhufuyi/sponge/pkg/goredis"
-	"github.com/zhufuyi/sponge/pkg/tracer"
+	"github.com/go-dev-frame/sponge/pkg/goredis"
+	"github.com/go-dev-frame/sponge/pkg/tracer"
 
 	"school/internal/config"
 )

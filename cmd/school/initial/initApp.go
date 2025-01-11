@@ -7,9 +7,9 @@ import (
 	"flag"
 	"strconv"
 
-	"github.com/zhufuyi/sponge/pkg/logger"
-	"github.com/zhufuyi/sponge/pkg/stat"
-	"github.com/zhufuyi/sponge/pkg/tracer"
+	"github.com/go-dev-frame/sponge/pkg/logger"
+	"github.com/go-dev-frame/sponge/pkg/stat"
+	"github.com/go-dev-frame/sponge/pkg/tracer"
 
 	"school/configs"
 	"school/internal/config"

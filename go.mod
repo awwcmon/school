@@ -1,16 +1,15 @@
 module school
 
-go 1.22.5
+go 1.23.4
 
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-dev-frame/sponge v1.12.1
 	github.com/jinzhu/copier v0.3.5
-	github.com/zhufuyi/sponge v1.11.0
 	go.mongodb.org/mongo-driver v1.14.0
 	go.uber.org/zap v1.24.0
 	golang.org/x/sync v0.10.0
-	google.golang.org/protobuf v1.36.1
+	google.golang.org/protobuf v1.34.2
 )
 
 require (

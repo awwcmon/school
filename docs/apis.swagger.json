@@ -1,10 +1,14 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "user api docs",
-    "version": "2.0"
+    "title": "File API",
+    "description": "RESTful API for file upload and download",
+    "version": "1.0.0"
   },
   "tags": [
+    {
+      "name": "file"
+    },
     {
       "name": "user"
     },
@@ -18,12 +22,44 @@
     "https"
   ],
   "consumes": [
-    "application/json"
+    "application/json;multipart/form-data"
   ],
   "produces": [
-    "application/json"
+    "application/json;multipart/form-data"
   ],
   "paths": {
+    "/api/v1/files": {
+      "post": {
+        "operationId": "file_CreateFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UploadFileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "file"
+        ]
+      }
+    },
     "/api/v1/hello": {
       "get": {
         "summary": "hello",
@@ -454,7 +490,7 @@
         },
         "exp": {
           "type": "string",
-          "title": "expressions, which default to = when the value is null, have =, !=, \u003e, \u003e=, \u003c, \u003c=, like, in"
+          "title": "expressions, default value is \"=\", support =, !=, \u003e, \u003e=, \u003c, \u003c=, like, in"
         },
         "value": {
           "type": "string",
@@ -462,7 +498,7 @@
         },
         "logic": {
           "type": "string",
-          "title": "logical type, defaults to and when value is null, only \u0026(and), ||(or)"
+          "title": "logical type, default value is \"and\", support \u0026, and, ||, or"
         }
       }
     },
@@ -700,6 +736,14 @@
     },
     "v1UpdateTeacherByIDReply": {
       "type": "object"
+    },
+    "v1UploadFileRequest": {
+      "type": "object",
+      "title": "文件上传请求"
+    },
+    "v1UploadFileResponse": {
+      "type": "object",
+      "title": "文件上传响应"
     }
   }
 }

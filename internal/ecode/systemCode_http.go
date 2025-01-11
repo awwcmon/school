@@ -2,7 +2,7 @@
 package ecode
 
 import (
-	"github.com/zhufuyi/sponge/pkg/errcode"
+	"github.com/go-dev-frame/sponge/pkg/errcode"
 )
 
 // http system level error code, error code range 10000~20000
@@ -39,4 +39,3 @@ var (
 var SkipResponse = errcode.SkipResponse
 
 // GetErrorCode get error code from error
-var GetErrorCode = errcode.GetErrorCode

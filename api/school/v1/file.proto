@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package api.school.v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// 配置 Go 包路径
+option go_package = "school/api/school/v1;v1";
+
+// 配置 OpenAPI 文档信息
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "localhost:8080";
+  base_path: "";
+  info: {
+    title: "File API";
+    version: "1.0.0";
+    description: "RESTful API for file upload and download";
+  };
+  schemes: HTTP;
+  schemes: HTTPS;
+  consumes: "application/json;multipart/form-data";
+  produces: "application/json;multipart/form-data";
+};
+
+service file{
+  rpc CreateFile(UploadFileRequest) returns(UploadFileResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/files"
+      body: "*" // 通常可以省略 body，使用 multipart/form-data。
+      selector: "[no_bind]"
+    };
+  }
+}
+// 文件上传请求
+message UploadFileRequest {
+
+}
+
+// 文件上传响应
+message UploadFileResponse{
+
+}

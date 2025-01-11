@@ -91,9 +91,9 @@ func (x *Params) GetColumns() []*Column {
 type Column struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name"`   // column name
-	Exp           string                 `protobuf:"bytes,2,opt,name=exp,proto3" json:"exp"`     // expressions, which default to = when the value is null, have =, !=, >, >=, <, <=, like, in
+	Exp           string                 `protobuf:"bytes,2,opt,name=exp,proto3" json:"exp"`     // expressions, default value is "=", support =, !=, >, >=, <, <=, like, in
 	Value         string                 `protobuf:"bytes,3,opt,name=value,proto3" json:"value"` // column value
-	Logic         string                 `protobuf:"bytes,4,opt,name=logic,proto3" json:"logic"` // logical type, defaults to and when value is null, only &(and), ||(or)
+	Logic         string                 `protobuf:"bytes,4,opt,name=logic,proto3" json:"logic"` // logical type, default value is "and", support &, and, ||, or
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

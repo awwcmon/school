@@ -7,7 +7,7 @@ import (
 // teacher business-level http error codes.
 // the teacherNO value range is 1~100, if the same error code is used, it will cause panic.
 var (
-	teacherNO       = 78
+	teacherNO       = 1
 	teacherName     = "teacher"
 	teacherBaseCode = errcode.HCode(teacherNO)
 
