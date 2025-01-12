@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: school-config
-  namespace: school
+  namespace: default
 data:
   school.yml: |-
     # If you need to convert YAML to a Go struct, please execute the command: make update-config
