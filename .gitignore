@@ -24,4 +24,4 @@ dist/
 */.DS_STORE
 *.tar.gz
 cmd/school/school
-./uploads
+./uploads/
