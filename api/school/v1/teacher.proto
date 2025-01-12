@@ -148,7 +148,8 @@ message CreateTeacherRequest {
 	string name = 1; 
 	int32 age = 2; 
 	string bornAt = 3; 
-	Job job = 4; 
+	Job job = 4;
+  repeated Book books = 5;
 }
 
 message CreateTeacherReply {
@@ -168,7 +169,8 @@ message UpdateTeacherByIDRequest {
 	string name = 2; 
 	int32 age = 3; 
 	string bornAt = 4; 
-	Job job = 5; 
+	Job job = 5;
+  Book book = 6;
 }
 
 message UpdateTeacherByIDReply {

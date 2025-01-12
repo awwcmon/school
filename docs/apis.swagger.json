@@ -508,6 +508,9 @@
         },
         "job": {
           "$ref": "#/definitions/v1Job"
+        },
+        "book": {
+          "$ref": "#/definitions/v1Book"
         }
       }
     },
@@ -610,6 +613,13 @@
         },
         "job": {
           "$ref": "#/definitions/v1Job"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Book"
+          }
         }
       }
     },

@@ -92,6 +92,40 @@ func (m *CreateTeacherRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBooks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateTeacherRequestValidationError{
+						field:  fmt.Sprintf("Books[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateTeacherRequestValidationError{
+						field:  fmt.Sprintf("Books[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateTeacherRequestValidationError{
+					field:  fmt.Sprintf("Books[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateTeacherRequestMultiError(errors)
 	}
@@ -553,6 +587,35 @@ func (m *UpdateTeacherByIDRequest) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return UpdateTeacherByIDRequestValidationError{
 				field:  "Job",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetBook()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateTeacherByIDRequestValidationError{
+					field:  "Book",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateTeacherByIDRequestValidationError{
+					field:  "Book",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetBook()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateTeacherByIDRequestValidationError{
+				field:  "Book",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
