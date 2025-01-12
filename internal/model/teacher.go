@@ -17,8 +17,8 @@ type Teacher struct {
 }
 type Book struct {
 	FileId   string `bson:"fileId" json:"fileId"`
-	FileName string `bson:"fileId" json:"fileName"`
-	FileSize int64  `bson:"fileId" json:"fileSize"`
+	FileName string `bson:"fileName" json:"fileName"`
+	FileSize int64  `bson:"fileSize" json:"fileSize"`
 }
 
 // TableName table name
