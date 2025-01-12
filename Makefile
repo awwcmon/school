@@ -107,7 +107,6 @@ image-push:
 	@bash scripts/image-push.sh $(REPO_HOST) $(TAG)
 
 .PHONY: helm
-# Push docker image to remote repositories, e.g. make image-push REPO_HOST=addr TAG=latest
 helm:
 	@bash scripts/deploy.sh $(CHART_REPO_NAME) $(CHART_URL) $(IMAGE_NAME) $(NAMESPACE) $(RELEASE_NAME)
 

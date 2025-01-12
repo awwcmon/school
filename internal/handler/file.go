@@ -4,7 +4,11 @@ package handler
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"github.com/go-dev-frame/sponge/pkg/gin/middleware"
+	"go.uber.org/zap"
 	"io"
 	"mime/multipart"
 	"os"
@@ -40,59 +44,53 @@ func (h *fileHandler) CreateFile(ctx context.Context, req *schoolV1.UploadFileRe
 		return nil, err
 	}
 	file, err := fh.Open()
+	fmt.Println(err)
 	defer func(file multipart.File) {
 		err := file.Close()
 		if err != nil {
-
 		}
 	}(file)
-	targetFile, err := os.OpenFile("uploads/"+fh.Filename, os.O_CREATE|os.O_WRONLY, 0666)
+	bytes, err := io.ReadAll(file)
 	if err != nil {
+		zap.Error(err)
+		return nil, err
+	}
+	md5sum := md5.Sum(bytes)
+	fileId := hex.EncodeToString(md5sum[:])
+	fmt.Println("hahahahah", string(fileId[:]))
+	targetFile, err := os.OpenFile("uploads/"+fileId, os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		zap.Error(err)
 		return nil, err
 	}
 	defer func(targetFile *os.File) {
 		err := targetFile.Close()
 		if err != nil {
+			zap.Error(err)
+
 		}
 	}(targetFile)
-	_, err = io.Copy(targetFile, file)
+	_, err = targetFile.Write(bytes)
 	if err != nil {
+		zap.Error(err)
 		return nil, err
 	}
 	fileinfo, err := os.Stat(targetFile.Name())
 	if err != nil {
+		zap.Error(err)
+
 		return nil, err
 	}
 	return &schoolV1.UploadFileResponse{
 		FileId:   fileinfo.Name(),
-		FileName: fileinfo.Name(),
+		FileName: fh.Filename,
 		FileSize: fileinfo.Size(),
 	}, nil
 }
 
 // DownloadFile ......
 func (h *fileHandler) DownloadFile(ctx context.Context, req *schoolV1.DownloadFileRequest) (*schoolV1.DownloadFileResponse, error) {
-	panic("implement me")
-
-	// fill in the business logic code here
-	// example:
-	//	    c, ctx := middleware.AdaptCtx(ctx)
-	//	    err := req.Validate()
-	//	    if err != nil {
-	//		    logger.Warn("req.Validate error", logger.Err(err), logger.Any("req", req), middleware.CtxRequestIDField(ctx))
-	//		    return nil, ecode.InvalidParams.Err()
-	//	    }
-	//
-	//	    reply, err := h.fileDao.DownloadFile(ctx, &model.File{
-	//     	FileId: req.FileId,
-	//     	FileName: req.FileName,
-	//     	FileSize: req.FileSize,
-	//     })
-	//	    if err != nil {
-	//			logger.Warn("DownloadFile error", logger.Err(err), middleware.CtxRequestIDField(ctx))
-	//			return nil, ecode.InternalServerError.Err()
-	//		}
-	//
-	//     return &schoolV1.DownloadFileResponse{
-	//     }, nil
+	c, _ := middleware.AdaptCtx(ctx)
+	c.File("uploads/" + c.Param("fileId"))
+	return &schoolV1.DownloadFileResponse{}, nil
 }

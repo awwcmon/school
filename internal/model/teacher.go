@@ -11,8 +11,14 @@ type Teacher struct {
 	Age       int                `bson:"age" json:"age"`
 	BornAt    time.Time          `bson:"born_at" json:"bornAt"`
 	Job       *Job               `bson:"job" json:"job"`
+	Books     []Book             `bson:"books" json:"books"`
 	CreatedAt time.Time          `bson:"created_at" json:"createdAt"`
 	UpdatedAt time.Time          `bson:"updated_at" json:"updatedAt"`
+}
+type Book struct {
+	fileId   string `bson:"file_id" json:"fileId"`
+	fileName string `bson:"file_name" json:"fileName"`
+	fileSize int64  `bson:"file_size" json:"fileSize"`
 }
 
 // TableName table name

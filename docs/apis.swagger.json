@@ -61,7 +61,7 @@
       }
     },
     "/api/v1/files/{fileId}": {
-      "post": {
+      "get": {
         "operationId": "file_DownloadFile",
         "responses": {
           "200": {
@@ -83,14 +83,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/fileDownloadFileBody"
-            }
           }
         ],
         "tags": [
@@ -473,19 +465,6 @@
     }
   },
   "definitions": {
-    "fileDownloadFileBody": {
-      "type": "object",
-      "properties": {
-        "fileName": {
-          "type": "string"
-        },
-        "fileSize": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "文件上传响应"
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -590,6 +569,21 @@
             "$ref": "#/definitions/typesColumn"
           },
           "title": "query conditions"
+        }
+      }
+    },
+    "v1Book": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "fileSize": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -779,6 +773,13 @@
         },
         "job": {
           "$ref": "#/definitions/v1Job"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Book"
+          }
         },
         "createdAt": {
           "type": "string"

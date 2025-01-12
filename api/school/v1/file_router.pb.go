@@ -11,7 +11,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/go-dev-frame/sponge/pkg/errcode"
-	"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 )
 
 type FileLogicer interface {
@@ -119,7 +118,7 @@ type fileRouter struct {
 
 func (r *fileRouter) register() {
 	r.iRouter.Handle("POST", "/api/v1/files", r.withMiddleware("POST", "/api/v1/files", r.CreateFile_0)...)
-	r.iRouter.Handle("POST", "/api/v1/files/:fileId", r.withMiddleware("POST", "/api/v1/files/:fileId", r.DownloadFile_0)...)
+	r.iRouter.Handle("GET", "/api/v1/files/:fileId", r.withMiddleware("GET", "/api/v1/files/:fileId", r.DownloadFile_0)...)
 
 }
 
@@ -169,19 +168,6 @@ func (r *fileRouter) CreateFile_0(c *gin.Context) {
 
 func (r *fileRouter) DownloadFile_0(c *gin.Context) {
 	req := &DownloadFileRequest{}
-	var err error
-
-	if err = c.ShouldBindUri(req); err != nil {
-		r.zapLog.Warn("ShouldBindUri error", zap.Error(err), middleware.GCtxRequestIDField(c))
-		r.iResponse.ParamError(c, err)
-		return
-	}
-
-	if err = c.ShouldBindJSON(req); err != nil {
-		r.zapLog.Warn("ShouldBindJSON error", zap.Error(err), middleware.GCtxRequestIDField(c))
-		r.iResponse.ParamError(c, err)
-		return
-	}
 
 	var ctx context.Context = c
 

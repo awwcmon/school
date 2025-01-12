@@ -180,9 +180,10 @@ message Teacher {
 	string name = 2; 
 	int32 age = 3; 
 	string bornAt = 4; 
-	Job job = 5; 
-	string createdAt = 6; 
-	string updatedAt = 7; 
+	Job job = 5;
+  repeated Book books = 6;
+	string createdAt = 7;
+	string updatedAt = 8;
 }
 
 message GetTeacherByIDRequest {
@@ -241,5 +242,10 @@ message Job {
   int32 salary = 2;
 }
 
+message Book {
+  string fileId = 1;
+  string fileName = 2;
+  int64 fileSize = 3;
+}
 
 

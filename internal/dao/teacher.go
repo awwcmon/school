@@ -119,6 +119,9 @@ func (d *teacherDao) updateDataByID(ctx context.Context, collection *mongo.Colle
 	if table.Job != nil {
 		update["job"] = table.Job
 	}
+	if table.Books != nil {
+		update["books"] = table.Books
+	}
 
 	filter := bson.M{"_id": table.ID}
 	_, err := collection.UpdateOne(ctx, mgo.ExcludeDeleted(filter), mgo.EmbedUpdatedAt(update))
