@@ -4,14 +4,15 @@ package handler
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/hex"
+	"encoding/base64"
 	"fmt"
+	"github.com/go-dev-frame/sponge/pkg/errcode"
 	"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 	"go.uber.org/zap"
 	"io"
 	"mime/multipart"
 	"os"
+	"strings"
 
 	//"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 
@@ -43,22 +44,9 @@ func (h *fileHandler) CreateFile(ctx context.Context, req *schoolV1.UploadFileRe
 	if err != nil {
 		return nil, err
 	}
-	file, err := fh.Open()
-	fmt.Println(err)
-	defer func(file multipart.File) {
-		err := file.Close()
-		if err != nil {
-		}
-	}(file)
-	bytes, err := io.ReadAll(file)
-	if err != nil {
-		zap.Error(err)
-		return nil, err
-	}
-	md5sum := md5.Sum(bytes)
-	fileId := hex.EncodeToString(md5sum[:])
-	fmt.Println("hahahahah", string(fileId[:]))
-	targetFile, err := os.OpenFile("uploads/"+fileId, os.O_CREATE|os.O_WRONLY, 0666)
+	filenameBytes := make([]byte, base64.StdEncoding.EncodedLen(len(fh.Filename)))
+	base64.StdEncoding.Encode(filenameBytes, []byte(fh.Filename))
+	targetFile, err := os.OpenFile("uploads/"+strings.TrimRight(string(filenameBytes), "\x00"), os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		zap.Error(err)
 		return nil, err
@@ -70,7 +58,13 @@ func (h *fileHandler) CreateFile(ctx context.Context, req *schoolV1.UploadFileRe
 
 		}
 	}(targetFile)
-	_, err = targetFile.Write(bytes)
+	file, err := fh.Open()
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+		}
+	}(file)
+	_, err = io.Copy(targetFile, file)
 	if err != nil {
 		zap.Error(err)
 		return nil, err
@@ -91,6 +85,12 @@ func (h *fileHandler) CreateFile(ctx context.Context, req *schoolV1.UploadFileRe
 // DownloadFile ......
 func (h *fileHandler) DownloadFile(ctx context.Context, req *schoolV1.DownloadFileRequest) (*schoolV1.DownloadFileResponse, error) {
 	c, _ := middleware.AdaptCtx(ctx)
-	c.File("uploads/" + c.Param("fileId"))
-	return &schoolV1.DownloadFileResponse{}, nil
+	filename := make([]byte, base64.StdEncoding.EncodedLen(len(req.FileId)))
+	_, err := base64.StdEncoding.Decode(filename, []byte(req.FileId))
+	if err != nil {
+		return nil, err
+	}
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%q", strings.TrimRight(string(filename), "\x00")))
+	c.File("uploads/" + req.FileId)
+	return &schoolV1.DownloadFileResponse{}, errcode.SkipResponse
 }
