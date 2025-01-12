@@ -16,9 +16,9 @@ type Teacher struct {
 	UpdatedAt time.Time          `bson:"updated_at" json:"updatedAt"`
 }
 type Book struct {
-	fileId   string `bson:"file_id" json:"fileId"`
-	fileName string `bson:"file_name" json:"fileName"`
-	fileSize int64  `bson:"file_size" json:"fileSize"`
+	FileId   string `bson:"fileId" json:"fileId"`
+	FileName string `bson:"fileId" json:"fileName"`
+	FileSize int64  `bson:"fileId" json:"fileSize"`
 }
 
 // TableName table name
