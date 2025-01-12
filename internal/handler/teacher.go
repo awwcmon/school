@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	schoolV1 "school/api/school/v1"
+	"school/internal/utils"
 	"strings"
 	"time"
 
@@ -47,7 +48,7 @@ func (h *teacherHandler) Create(ctx context.Context, req *schoolV1.CreateTeacher
 	}
 
 	teacher := &model.Teacher{}
-	err = copier.Copy(teacher, req)
+	err = copier.CopyWithOption(teacher, req, utils.CopierOption)
 	if err != nil {
 		return nil, ecode.ErrCreateTeacher.Err()
 	}
@@ -88,7 +89,7 @@ func (h *teacherHandler) UpdateByID(ctx context.Context, req *schoolV1.UpdateTea
 	}
 
 	teacher := &model.Teacher{}
-	err = copier.Copy(teacher, req)
+	err = copier.CopyWithOption(teacher, req, utils.CopierOption)
 	if err != nil {
 		return nil, ecode.ErrUpdateByIDTeacher.Err()
 	}
@@ -142,7 +143,7 @@ func (h *teacherHandler) List(ctx context.Context, req *schoolV1.ListTeacherRequ
 	}
 
 	params := &query.Params{}
-	err = copier.Copy(params, req.Params)
+	err = copier.CopyWithOption(params, req.Params, utils.CopierOption)
 	if err != nil {
 		return nil, ecode.ErrListTeacher.Err()
 	}
@@ -202,7 +203,7 @@ func (h *teacherHandler) GetByCondition(ctx context.Context, req *schoolV1.GetTe
 	conditions := &query.Conditions{}
 	for _, v := range req.Conditions.GetColumns() {
 		column := query.Column{}
-		_ = copier.Copy(&column, v)
+		_ = copier.CopyWithOption(&column, v, utils.CopierOption)
 		conditions.Columns = append(conditions.Columns, column)
 	}
 	err = conditions.CheckValid()
@@ -297,7 +298,7 @@ func (h *teacherHandler) ListByLastID(ctx context.Context, req *schoolV1.ListTea
 
 func convertTeacher(record *model.Teacher) (*schoolV1.Teacher, error) {
 	value := &schoolV1.Teacher{}
-	err := copier.Copy(value, record)
+	err := copier.CopyWithOption(value, record, utils.CopierOption)
 	if err != nil {
 		return nil, err
 	}
