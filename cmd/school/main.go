@@ -11,6 +11,7 @@ func main() {
 	initial.InitApp()
 	services := initial.CreateServices()
 	closes := initial.Close(services)
+	initial.InitSnailJob()
 	a := app.New(services, closes)
 	a.Run()
 }
