@@ -74,7 +74,7 @@ type LoginRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -175,7 +175,7 @@ type LoginReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -276,7 +276,7 @@ type HelloRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HelloRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -377,7 +377,7 @@ type HelloReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HelloReplyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

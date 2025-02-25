@@ -17,7 +17,7 @@ http:
 logger:
   level: "info"
   format: "console"
-  isSave: false
+  isSave: true
 database:
   driver: "mongodb"
   mongodb:
@@ -34,9 +34,9 @@ moroto:
   enable: true
   docsPath: "docs"
 snailjob:
-  ServerHost: "snail-job"
+  ServerHost: "127.0.0.1"
   ServerPort: "31788"
-  HostIP: "school-svc"
+  HostIP: "127.0.0.1"
   HostPort: "17889"
   Namespace: "764d604ec6fc45f68cd92514c40e9e1a"
   GroupName: "snail_job_demo_group"
