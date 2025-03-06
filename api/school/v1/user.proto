@@ -1,0 +1,242 @@
+syntax = "proto3";
+
+package api.school.v1;
+
+import "api/types/types.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "tagger/tagger.proto";
+import "validate/validate.proto";
+
+option go_package = "school/api/school/v1;v1";
+
+/*
+Reference https://github.com/grpc-ecosystem/grpc-gateway/blob/db7fbefff7c04877cdb32e16d4a248a024428207/examples/internal/proto/examplepb/a_bit_of_everything.proto
+Default settings for generating swagger documents
+NOTE: because json does not support 64 bits, the int64 and uint64 types under *.swagger.json are automatically converted to string types
+Tips: add swagger option to rpc method, example:
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "get user by id",
+      description: "get user by id",
+      security: {
+        security_requirement: {
+          key: "BearerAuth";
+          value: {}
+        }
+      }
+    };
+*/
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  host: "localhost:8080"
+  base_path: ""
+  info: {
+    title: "school api docs";
+    version: "2.0";
+  }
+  schemes: HTTP;
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+  security_definitions: {
+    security: {
+      key: "BearerAuth";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization";
+        description: "Type Bearer your-jwt-token to Value";
+      }
+    }
+  }
+};
+
+service user {
+  // create user
+  rpc Create(CreateUserRequest) returns (CreateUserReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user"
+      body: "*"
+    };
+  }
+
+  // delete user by id
+  rpc DeleteByID(DeleteUserByIDRequest) returns (DeleteUserByIDReply) {
+    option (google.api.http) = {
+      delete: "/api/v1/user/{id}"
+    };
+  }
+
+  // update user by id
+  rpc UpdateByID(UpdateUserByIDRequest) returns (UpdateUserByIDReply) {
+    option (google.api.http) = {
+      put: "/api/v1/user/{id}"
+      body: "*"
+    };
+  }
+
+  // get user by id
+  rpc GetByID(GetUserByIDRequest) returns (GetUserByIDReply) {
+    option (google.api.http) = {
+      get: "/api/v1/user/{id}"
+    };
+  }
+
+  // list of user by query parameters
+  rpc List(ListUserRequest) returns (ListUserReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/list"
+      body: "*"
+    };
+  }
+
+  // delete user by batch id
+  rpc DeleteByIDs(DeleteUserByIDsRequest) returns (DeleteUserByIDsReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/delete/ids"
+      body: "*"
+    };
+  }
+
+  // get user by condition
+  rpc GetByCondition(GetUserByConditionRequest) returns (GetUserByConditionReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/condition"
+      body: "*"
+    };
+  }
+
+  // list of user by batch id
+  rpc ListByIDs(ListUserByIDsRequest) returns (ListUserByIDsReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/list/ids"
+      body: "*"
+    };
+  }
+
+  // list user by last id
+  rpc ListByLastID(ListUserByLastIDRequest) returns (ListUserByLastIDReply) {
+    option (google.api.http) = {
+      get: "/api/v1/user/list"
+    };
+  }
+}
+
+
+/*
+Notes for defining message fields:
+    1. Suggest using camel case style naming for message field names, such as firstName, lastName, etc.
+    2. If the message field name ending in 'id', it is recommended to use xxxID naming format, such as userID, orderID, etc.
+    3. Add validate rules https://github.com/envoyproxy/protoc-gen-validate#constraint-rules, such as:
+        uint64 id = 1 [(validate.rules).uint64.gte  = 1];
+
+If used to generate code that supports the HTTP protocol, notes for defining message fields:
+    1. If the route contains the path parameter, such as /api/v1/user/{id}, the defined
+        message must contain the name of the path parameter and the name should be added
+        with a new tag, such as int64 id = 1 [(tagger.tags) = "uri:\"id\""];
+    2. If the request url is followed by a query parameter, such as /api/v1/getUser?name=Tom,
+        a form tag must be added when defining the query parameter in the message, such as:
+        string name = 1 [(tagger.tags) = "form:\"name\""].
+    3. If the message field name contain underscores(such as 'field_name'), it will cause a problem
+        where the JSON field names of the Swagger request parameters are different from those of the
+        GRPC JSON tag names. There are two solutions: Solution 1, remove the underline from the
+         message field name. Option 2, use the tool 'protoc-go-inject-tag' to modify the JSON tag name,
+         such as: string first_name = 1 ; // @gotags: json:"firstName"
+*/
+
+
+message CreateUserRequest {
+	string password = 1; 
+	string realName = 2; 
+	repeated string roles = 3; 
+	string username = 4; 
+	repeated string codes = 5; 
+}
+
+message CreateUserReply {
+  string id = 1;
+}
+
+message DeleteUserByIDRequest {
+  string id =1 [(validate.rules).string.min_len = 6, (tagger.tags) = "uri:\"id\""];
+}
+
+message DeleteUserByIDReply {
+
+}
+
+message UpdateUserByIDRequest {
+	string id = 1 [(validate.rules).string.min_len = 6, (tagger.tags) = "uri:\"id\""]; 
+	string password = 2; 
+	string realName = 3; 
+	repeated string roles = 4; 
+	string username = 5; 
+	repeated string codes = 6; 
+}
+
+message UpdateUserByIDReply {
+
+}
+
+message User {
+	string id = 1; 
+	string password = 2; 
+	string realName = 3; 
+	repeated string roles = 4; 
+	string username = 5; 
+	repeated string codes = 6; 
+	string createdAt = 7; 
+	string updatedAt = 8; 
+}
+
+message GetUserByIDRequest {
+  string id =1 [(validate.rules).string.min_len = 6, (tagger.tags) = "uri:\"id\"" ];
+}
+
+message GetUserByIDReply {
+  User user = 1;
+}
+
+message ListUserRequest {
+  api.types.Params params = 1;
+}
+
+message ListUserReply {
+  int64 total = 1;
+  repeated User users = 2;
+}
+
+message DeleteUserByIDsRequest {
+  repeated string ids = 1 [(validate.rules).repeated.min_items = 1];
+}
+
+message DeleteUserByIDsReply {
+
+}
+
+message GetUserByConditionRequest {
+  types.Conditions conditions = 1;
+}
+
+message GetUserByConditionReply {
+  User user = 1;
+}
+
+message ListUserByIDsRequest {
+  repeated string ids = 1 [(validate.rules).repeated.min_items = 1];
+}
+
+message ListUserByIDsReply {
+  repeated User users = 1;
+}
+
+message ListUserByLastIDRequest {
+  string lastID = 1 [(tagger.tags) = "form:\"lastID\""]; // last id
+  uint32 limit = 2 [(validate.rules).uint32.gt = 0, (tagger.tags) = "form:\"limit\""]; // limit size per page
+  string sort = 3 [(tagger.tags) = "form:\"sort\""]; // sort by column name of table, default is -id, the - sign indicates descending order.
+}
+
+message ListUserByLastIDReply {
+  repeated User users = 1;
+}
+
+

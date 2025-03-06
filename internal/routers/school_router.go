@@ -14,28 +14,28 @@ import (
 
 func init() {
 	allMiddlewareFns = append(allMiddlewareFns, func(c *middlewareConfig) {
-		userMiddlewares(c)
+		schoolMiddlewares(c)
 	})
 
 	allRouteFns = append(allRouteFns,
 		func(r *gin.Engine, groupPathMiddlewares map[string][]gin.HandlerFunc, singlePathMiddlewares map[string][]gin.HandlerFunc) {
-			userRouter(r, groupPathMiddlewares, singlePathMiddlewares, handler.NewUserHandler())
+			schoolRouter(r, groupPathMiddlewares, singlePathMiddlewares, handler.NewSchoolHandler())
 		})
 }
 
-func userRouter(
+func schoolRouter(
 	r *gin.Engine,
 	groupPathMiddlewares map[string][]gin.HandlerFunc,
 	singlePathMiddlewares map[string][]gin.HandlerFunc,
-	iService schoolV1.UserLogicer) {
-	schoolV1.RegisterUserRouter(
+	iService schoolV1.SchoolLogicer) {
+	schoolV1.RegisterSchoolRouter(
 		r,
 		groupPathMiddlewares,
 		singlePathMiddlewares,
 		iService,
-		schoolV1.WithUserLogger(logger.Get()),
-		schoolV1.WithUserHTTPResponse(),
-		schoolV1.WithUserErrorToHTTPCode(
+		schoolV1.WithSchoolLogger(logger.Get()),
+		schoolV1.WithSchoolHTTPResponse(),
+		schoolV1.WithSchoolErrorToHTTPCode(
 		// Set some error codes to standard http return codes,
 		// by default there is already ecode.InternalServerError and ecode.ServiceUnavailable
 		// example:
@@ -47,10 +47,10 @@ func userRouter(
 // you can set the middleware of a route group, or set the middleware of a single route,
 // or you can mix them, pay attention to the duplication of middleware when mixing them,
 // it is recommended to set the middleware of a single route in preference
-func userMiddlewares(c *middlewareConfig) {
+func schoolMiddlewares(c *middlewareConfig) {
 	// set up group route middleware, group path is left prefix rules,
-	// if the left prefix is hit, the middleware will take effect, e.g. group route is /api/v1, route /api/v1/user/:id  will take effect
-	// c.setGroupPath("/api/v1/user", middleware.Auth())
+	// if the left prefix is hit, the middleware will take effect, e.g. group route is /api/v1, route /api/v1/school/:id  will take effect
+	// c.setGroupPath("/api/v1/school", middleware.Auth())
 
 	// set up single route middleware, just uncomment the code and fill in the middlewares, nothing else needs to be changed
 	//c.setSinglePath("POST", "/api/v1/login", middleware.Auth())    // Login 登录注释

@@ -8,16 +8,16 @@ import (
 	//"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 )
 
-var _ schoolV1.UserLogicer = (*userHandler)(nil)
+var _ schoolV1.SchoolLogicer = (*schoolHandler)(nil)
 
-type userHandler struct {
+type schoolHandler struct {
 	// example:
 	// 	userDao dao.UserDao
 }
 
 // NewUserHandler create a handler
-func NewUserHandler() schoolV1.UserLogicer {
-	return &userHandler{
+func NewSchoolHandler() schoolV1.SchoolLogicer {
+	return &schoolHandler{
 		// example:
 		// 	userDao: dao.NewUserDao(
 		// 		database.GetDB(),
@@ -27,7 +27,7 @@ func NewUserHandler() schoolV1.UserLogicer {
 }
 
 // Login 登录注释
-func (h *userHandler) Login(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginReply, error) {
+func (h *schoolHandler) Login(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginReply, error) {
 	panic("implement me")
 
 	// fill in the business logic code here
@@ -54,7 +54,7 @@ func (h *userHandler) Login(ctx context.Context, req *schoolV1.LoginRequest) (*s
 }
 
 // Hello ......
-func (h *userHandler) Hello(ctx context.Context, req *schoolV1.HelloRequest) (*schoolV1.HelloReply, error) {
+func (h *schoolHandler) Hello(ctx context.Context, req *schoolV1.HelloRequest) (*schoolV1.HelloReply, error) {
 	panic("implement me")
 
 	// fill in the business logic code here

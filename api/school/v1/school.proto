@@ -21,7 +21,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   produces: "application/json";
 };
 
-service user {
+service school {
   // Login 登录注释
   rpc Login(LoginRequest) returns (LoginReply) {
     option (google.api.http) = {

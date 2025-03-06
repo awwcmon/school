@@ -14,14 +14,14 @@ import (
 	"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 )
 
-type UserLogicer interface {
+type SchoolLogicer interface {
 	Login(ctx context.Context, req *LoginRequest) (*LoginReply, error)
 	Hello(ctx context.Context, req *HelloRequest) (*HelloReply, error)
 }
 
-type UserOption func(*userOptions)
+type SchoolOption func(*schoolOptions)
 
-type userOptions struct {
+type schoolOptions struct {
 	isFromRPC  bool
 	responser  errcode.Responser
 	zapLog     *zap.Logger
@@ -30,62 +30,62 @@ type userOptions struct {
 	wrapCtxFn  func(c *gin.Context) context.Context
 }
 
-func (o *userOptions) apply(opts ...UserOption) {
+func (o *schoolOptions) apply(opts ...SchoolOption) {
 	for _, opt := range opts {
 		opt(o)
 	}
 }
 
-func WithUserHTTPResponse() UserOption {
-	return func(o *userOptions) {
+func WithSchoolHTTPResponse() SchoolOption {
+	return func(o *schoolOptions) {
 		o.isFromRPC = false
 	}
 }
 
-func WithUserRPCResponse() UserOption {
-	return func(o *userOptions) {
+func WithSchoolRPCResponse() SchoolOption {
+	return func(o *schoolOptions) {
 		o.isFromRPC = true
 	}
 }
 
-func WithUserResponser(responser errcode.Responser) UserOption {
-	return func(o *userOptions) {
+func WithSchoolResponser(responser errcode.Responser) SchoolOption {
+	return func(o *schoolOptions) {
 		o.responser = responser
 	}
 }
 
-func WithUserLogger(zapLog *zap.Logger) UserOption {
-	return func(o *userOptions) {
+func WithSchoolLogger(zapLog *zap.Logger) SchoolOption {
+	return func(o *schoolOptions) {
 		o.zapLog = zapLog
 	}
 }
 
-func WithUserErrorToHTTPCode(e ...*errcode.Error) UserOption {
-	return func(o *userOptions) {
+func WithSchoolErrorToHTTPCode(e ...*errcode.Error) SchoolOption {
+	return func(o *schoolOptions) {
 		o.httpErrors = e
 	}
 }
 
-func WithUserRPCStatusToHTTPCode(s ...*errcode.RPCStatus) UserOption {
-	return func(o *userOptions) {
+func WithSchoolRPCStatusToHTTPCode(s ...*errcode.RPCStatus) SchoolOption {
+	return func(o *schoolOptions) {
 		o.rpcStatus = s
 	}
 }
 
-func WithUserWrapCtx(wrapCtxFn func(c *gin.Context) context.Context) UserOption {
-	return func(o *userOptions) {
+func WithSchoolWrapCtx(wrapCtxFn func(c *gin.Context) context.Context) SchoolOption {
+	return func(o *schoolOptions) {
 		o.wrapCtxFn = wrapCtxFn
 	}
 }
 
-func RegisterUserRouter(
+func RegisterSchoolRouter(
 	iRouter gin.IRouter,
 	groupPathMiddlewares map[string][]gin.HandlerFunc,
 	singlePathMiddlewares map[string][]gin.HandlerFunc,
-	iLogic UserLogicer,
-	opts ...UserOption) {
+	iLogic SchoolLogicer,
+	opts ...SchoolOption) {
 
-	o := &userOptions{}
+	o := &schoolOptions{}
 	o.apply(opts...)
 
 	if o.responser == nil {
@@ -95,7 +95,7 @@ func RegisterUserRouter(
 		o.zapLog, _ = zap.NewProduction()
 	}
 
-	r := &userRouter{
+	r := &schoolRouter{
 		iRouter:               iRouter,
 		groupPathMiddlewares:  groupPathMiddlewares,
 		singlePathMiddlewares: singlePathMiddlewares,
@@ -107,23 +107,23 @@ func RegisterUserRouter(
 	r.register()
 }
 
-type userRouter struct {
+type schoolRouter struct {
 	iRouter               gin.IRouter
 	groupPathMiddlewares  map[string][]gin.HandlerFunc
 	singlePathMiddlewares map[string][]gin.HandlerFunc
-	iLogic                UserLogicer
+	iLogic                SchoolLogicer
 	iResponse             errcode.Responser
 	zapLog                *zap.Logger
 	wrapCtxFn             func(c *gin.Context) context.Context
 }
 
-func (r *userRouter) register() {
+func (r *schoolRouter) register() {
 	r.iRouter.Handle("POST", "/api/v1/login", r.withMiddleware("POST", "/api/v1/login", r.Login_0)...)
 	r.iRouter.Handle("GET", "/api/v1/hello", r.withMiddleware("GET", "/api/v1/hello", r.Hello_0)...)
 
 }
 
-func (r *userRouter) withMiddleware(method string, path string, fn gin.HandlerFunc) []gin.HandlerFunc {
+func (r *schoolRouter) withMiddleware(method string, path string, fn gin.HandlerFunc) []gin.HandlerFunc {
 	handlerFns := []gin.HandlerFunc{}
 
 	// determine if a route group is hit or miss, left prefix rule
@@ -150,7 +150,7 @@ func (r *userRouter) withMiddleware(method string, path string, fn gin.HandlerFu
 	return append(handlerFns, fn)
 }
 
-func (r *userRouter) Login_0(c *gin.Context) {
+func (r *schoolRouter) Login_0(c *gin.Context) {
 	req := &LoginRequest{}
 	var err error
 
@@ -179,7 +179,7 @@ func (r *userRouter) Login_0(c *gin.Context) {
 	r.iResponse.Success(c, out)
 }
 
-func (r *userRouter) Hello_0(c *gin.Context) {
+func (r *schoolRouter) Hello_0(c *gin.Context) {
 	req := &HelloRequest{}
 	var err error
 

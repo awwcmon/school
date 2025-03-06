@@ -9,12 +9,14 @@ import (
 // user business-level http error codes.
 // the userNO value range is 1~100, if the same error code is used, it will cause panic.
 var (
-	userNO       = 65
-	userName     = "user"
-	userBaseCode = errcode.HCode(userNO)
+	schoolNO       = 65
+	schoolName     = "school"
+	schoolBaseCode = errcode.HCode(schoolNO)
 
-	ErrLoginUser = errcode.NewError(userBaseCode+1, "failed to Login "+userName)
-	ErrHelloUser = errcode.NewError(userBaseCode+2, "failed to Hello "+userName)
+	ErrLoginUser   = errcode.NewError(schoolBaseCode+1, "failed to Login "+schoolName)
+	ErrHelloUser   = errcode.NewError(schoolBaseCode+2, "failed to Hello "+schoolName)
+	ErrLoginSchool = errcode.NewError(schoolBaseCode+3, "failed to Login "+schoolName)
+	ErrHelloSchool = errcode.NewError(schoolBaseCode+4, "failed to Hello "+schoolName)
 
 	// error codes are globally unique, adding 1 to the previous error code
 )
