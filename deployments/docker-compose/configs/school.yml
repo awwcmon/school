@@ -1,0 +1,45 @@
+app:
+  name: "school"
+  env: "dev"
+  version: "v0.0.0"
+  host: "127.0.0.1"
+  enableStat: true
+  enableMetrics: true
+  enableHTTPProfile: false
+  enableLimit: false
+  enableCircuitBreaker: false
+  enableTrace: false
+  tracingSamplingRate: 1.0
+  cacheType: "redis"
+http:
+  port: 8080
+  timeout: 0
+logger:
+  level: "info"
+  format: "console"
+  isSave: true
+database:
+  driver: "mongodb"
+  mongodb:
+    dsn: "root:vvvvvv@(127.0.0.1:27017)/school?connectTimeoutMS=15000&socketTimeoutMS=30000&maxPoolSize=100&minPoolSize=1&maxConnIdleTimeMS=300000"
+redis:
+  dsn: "default:vvvvvv@127.0.0.1:6379/0"
+  dialTimeout: 10
+  readTimeout: 2
+  writeTimeout: 2
+jaeger:
+  agentHost: "192.168.3.37"
+  agentPort: 6831
+moroto:
+  enable: true
+  docsPath: "docs"
+snailjob:
+  ServerHost: "127.0.0.1"
+  ServerPort: "31788"
+  HostIP: "127.0.0.1"
+  HostPort: "17889"
+  Namespace: "764d604ec6fc45f68cd92514c40e9e1a"
+  GroupName: "snail_job_demo_group"
+  Token: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  Level: logrus.InfoLevel
+  ReportCaller: true
