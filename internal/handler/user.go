@@ -3,11 +3,15 @@ package handler
 import (
 	"context"
 	"errors"
+	"net/http"
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/jinzhu/copier"
 
+	"github.com/go-dev-frame/sponge/pkg/errcode"
 	"github.com/go-dev-frame/sponge/pkg/gin/middleware"
 	"github.com/go-dev-frame/sponge/pkg/logger"
 	"github.com/go-dev-frame/sponge/pkg/mgo/query"
@@ -293,6 +297,85 @@ func (h *userHandler) ListByLastID(ctx context.Context, req *schoolV1.ListUserBy
 	return &schoolV1.ListUserByLastIDReply{
 		Users: users,
 	}, nil
+}
+
+// Login login
+func (h *userHandler) Login(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginResult, error) {
+	c, ctx := middleware.AdaptCtx(ctx)
+	c.ShouldBindJSON(req)
+	secretKey := []byte("")
+
+	// JWT 载荷
+	claims := jwt.MapClaims{
+		"username": "vben",
+		"password": "123456",
+		"iat":      time.Now().Unix(),
+		"exp":      time.Now().Add(time.Hour * 24).Unix(), // 24小时后过期
+	}
+
+	// 生成 Token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, _ := token.SignedString(secretKey)
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"data": gin.H{
+			"id":          0,
+			"password":    "123456",
+			"realName":    "Vben",
+			"roles":       []string{"super"},
+			"username":    "vben",
+			"accessToken": signedToken,
+		},
+		"error":   nil,
+		"message": "ok",
+	})
+	return nil, errcode.SkipResponse
+}
+
+// Info ......
+func (h *userHandler) Info(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginResult, error) {
+	c, ctx := middleware.AdaptCtx(ctx)
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"data": gin.H{
+			"id":       0,
+			"realName": "Vben",
+			"roles":    []string{"super"},
+			"username": "vben",
+		},
+		"error":   nil,
+		"message": "ok",
+	})
+	return nil, errcode.SkipResponse
+}
+
+// Codes ......
+func (h *userHandler) Codes(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginResult, error) {
+	c, ctx := middleware.AdaptCtx(ctx)
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"data": []string{
+			"AC_100100",
+			"AC_100110",
+			"AC_100120",
+			"AC_100010",
+		},
+		"error":   nil,
+		"message": "ok",
+	})
+	return nil, errcode.SkipResponse
+}
+
+// Logout ......
+func (h *userHandler) Logout(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginResult, error) {
+	c, ctx := middleware.AdaptCtx(ctx)
+	c.JSON(http.StatusOK, gin.H{
+		"code":    0,
+		"data":    "",
+		"error":   nil,
+		"message": "ok",
+	})
+	return nil, errcode.SkipResponse
 }
 
 func convertUser(record *model.User) (*schoolV1.User, error) {

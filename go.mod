@@ -5,6 +5,7 @@ go 1.23.4
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-dev-frame/sponge v1.12.8
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jinzhu/copier v0.3.5
 	go.mongodb.org/mongo-driver v1.14.0
 	go.uber.org/zap v1.24.0
@@ -41,7 +42,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.20.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
-	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/pprof v0.0.0-20211214055906-6f57359322fd // indirect

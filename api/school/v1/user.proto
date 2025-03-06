@@ -119,6 +119,31 @@ service user {
       get: "/api/v1/user/list"
     };
   }
+  // login
+  rpc Login(LoginRequest) returns (LoginResult) {
+    option (google.api.http) = {
+      post: "/api/auth/login"
+      selector: "[no_bind]"
+    };
+  }
+  rpc Info(LoginRequest) returns (LoginResult) {
+    option (google.api.http) = {
+      get: "/api/user/info"
+      selector: "[no_bind]"
+    };
+  }
+  rpc Codes(LoginRequest) returns (LoginResult) {
+    option (google.api.http) = {
+      get: "/api/auth/codes"
+      selector: "[no_bind]"
+    };
+  }
+  rpc Logout(LoginRequest) returns (LoginResult) {
+    option (google.api.http) = {
+      post: "/api/auth/logout"
+      selector: "[no_bind]"
+    };
+  }
 }
 
 
@@ -145,11 +170,11 @@ If used to generate code that supports the HTTP protocol, notes for defining mes
 
 
 message CreateUserRequest {
-	string password = 1; 
-	string realName = 2; 
-	repeated string roles = 3; 
-	string username = 4; 
-	repeated string codes = 5; 
+	string password = 1;
+	string realName = 2;
+	repeated string roles = 3;
+	string username = 4;
+	repeated string codes = 5;
 }
 
 message CreateUserReply {
@@ -165,12 +190,12 @@ message DeleteUserByIDReply {
 }
 
 message UpdateUserByIDRequest {
-	string id = 1 [(validate.rules).string.min_len = 6, (tagger.tags) = "uri:\"id\""]; 
-	string password = 2; 
-	string realName = 3; 
-	repeated string roles = 4; 
-	string username = 5; 
-	repeated string codes = 6; 
+	string id = 1 [(validate.rules).string.min_len = 6, (tagger.tags) = "uri:\"id\""];
+	string password = 2;
+	string realName = 3;
+	repeated string roles = 4;
+	string username = 5;
+	repeated string codes = 6;
 }
 
 message UpdateUserByIDReply {
@@ -178,14 +203,14 @@ message UpdateUserByIDReply {
 }
 
 message User {
-	string id = 1; 
-	string password = 2; 
-	string realName = 3; 
-	repeated string roles = 4; 
-	string username = 5; 
-	repeated string codes = 6; 
-	string createdAt = 7; 
-	string updatedAt = 8; 
+	string id = 1;
+	string password = 2;
+	string realName = 3;
+	repeated string roles = 4;
+	string username = 5;
+	repeated string codes = 6;
+	string createdAt = 7;
+	string updatedAt = 8;
 }
 
 message GetUserByIDRequest {
@@ -239,4 +264,15 @@ message ListUserByLastIDReply {
   repeated User users = 1;
 }
 
-
+message LoginRequest {
+	string username = 1;
+	string password = 2;
+}
+message LoginResult {
+    string id = 1;
+	string password = 2;
+	string realName = 3;
+	repeated string roles = 4;
+	string username = 5;
+	string accessToken=6;
+}

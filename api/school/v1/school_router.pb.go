@@ -15,7 +15,6 @@ import (
 )
 
 type SchoolLogicer interface {
-	Login(ctx context.Context, req *LoginRequest) (*LoginReply, error)
 	Hello(ctx context.Context, req *HelloRequest) (*HelloReply, error)
 }
 
@@ -118,7 +117,6 @@ type schoolRouter struct {
 }
 
 func (r *schoolRouter) register() {
-	r.iRouter.Handle("POST", "/api/v1/login", r.withMiddleware("POST", "/api/v1/login", r.Login_0)...)
 	r.iRouter.Handle("GET", "/api/v1/hello", r.withMiddleware("GET", "/api/v1/hello", r.Hello_0)...)
 
 }
@@ -148,35 +146,6 @@ func (r *schoolRouter) withMiddleware(method string, path string, fn gin.Handler
 	}
 
 	return append(handlerFns, fn)
-}
-
-func (r *schoolRouter) Login_0(c *gin.Context) {
-	req := &LoginRequest{}
-	var err error
-
-	if err = c.ShouldBindJSON(req); err != nil {
-		r.zapLog.Warn("ShouldBindJSON error", zap.Error(err), middleware.GCtxRequestIDField(c))
-		r.iResponse.ParamError(c, err)
-		return
-	}
-
-	var ctx context.Context
-	if r.wrapCtxFn != nil {
-		ctx = r.wrapCtxFn(c)
-	} else {
-		ctx = middleware.WrapCtx(c)
-	}
-
-	out, err := r.iLogic.Login(ctx, req)
-	if err != nil {
-		if errors.Is(err, errcode.SkipResponse) {
-			return
-		}
-		r.iResponse.Error(c, err)
-		return
-	}
-
-	r.iResponse.Success(c, out)
 }
 
 func (r *schoolRouter) Hello_0(c *gin.Context) {

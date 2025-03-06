@@ -26,33 +26,6 @@ func NewSchoolHandler() schoolV1.SchoolLogicer {
 	}
 }
 
-// Login 登录注释
-func (h *schoolHandler) Login(ctx context.Context, req *schoolV1.LoginRequest) (*schoolV1.LoginReply, error) {
-	panic("implement me")
-
-	// fill in the business logic code here
-	// example:
-	//
-	//	    err := req.Validate()
-	//	    if err != nil {
-	//		    logger.Warn("req.Validate error", logger.Err(err), logger.Any("req", req), middleware.CtxRequestIDField(ctx))
-	//		    return nil, ecode.InvalidParams.Err()
-	//	    }
-	//
-	//	    reply, err := h.userDao.Login(ctx, &model.User{
-	//     	Email: req.Email,
-	//     	Password: req.Password,
-	//     })
-	//	    if err != nil {
-	//			logger.Warn("Login error", logger.Err(err), middleware.CtxRequestIDField(ctx))
-	//			return nil, ecode.InternalServerError.Err()
-	//		}
-	//
-	//     return &schoolV1.LoginReply{
-	//     	Token: reply.Token,
-	//     }, nil
-}
-
 // Hello ......
 func (h *schoolHandler) Hello(ctx context.Context, req *schoolV1.HelloRequest) (*schoolV1.HelloReply, error) {
 	panic("implement me")

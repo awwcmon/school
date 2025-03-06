@@ -24,6 +24,10 @@ type UserLogicer interface {
 	GetByCondition(ctx context.Context, req *GetUserByConditionRequest) (*GetUserByConditionReply, error)
 	ListByIDs(ctx context.Context, req *ListUserByIDsRequest) (*ListUserByIDsReply, error)
 	ListByLastID(ctx context.Context, req *ListUserByLastIDRequest) (*ListUserByLastIDReply, error)
+	Login(ctx context.Context, req *LoginRequest) (*LoginResult, error)
+	Info(ctx context.Context, req *LoginRequest) (*LoginResult, error)
+	Codes(ctx context.Context, req *LoginRequest) (*LoginResult, error)
+	Logout(ctx context.Context, req *LoginRequest) (*LoginResult, error)
 }
 
 type UserOption func(*userOptions)
@@ -134,6 +138,10 @@ func (r *userRouter) register() {
 	r.iRouter.Handle("POST", "/api/v1/user/condition", r.withMiddleware("POST", "/api/v1/user/condition", r.GetByCondition_2)...)
 	r.iRouter.Handle("POST", "/api/v1/user/list/ids", r.withMiddleware("POST", "/api/v1/user/list/ids", r.ListByIDs_2)...)
 	r.iRouter.Handle("GET", "/api/v1/user/list", r.withMiddleware("GET", "/api/v1/user/list", r.ListByLastID_2)...)
+	r.iRouter.Handle("POST", "/api/auth/login", r.withMiddleware("POST", "/api/auth/login", r.Login_0)...)
+	r.iRouter.Handle("GET", "/api/user/info", r.withMiddleware("GET", "/api/user/info", r.Info_0)...)
+	r.iRouter.Handle("GET", "/api/auth/codes", r.withMiddleware("GET", "/api/auth/codes", r.Codes_0)...)
+	r.iRouter.Handle("POST", "/api/auth/logout", r.withMiddleware("POST", "/api/auth/logout", r.Logout_0)...)
 
 }
 
@@ -432,6 +440,74 @@ func (r *userRouter) ListByLastID_2(c *gin.Context) {
 	}
 
 	out, err := r.iLogic.ListByLastID(ctx, req)
+	if err != nil {
+		if errors.Is(err, errcode.SkipResponse) {
+			return
+		}
+		r.iResponse.Error(c, err)
+		return
+	}
+
+	r.iResponse.Success(c, out)
+}
+
+func (r *userRouter) Login_0(c *gin.Context) {
+	req := &LoginRequest{}
+
+	var ctx context.Context = c
+
+	out, err := r.iLogic.Login(ctx, req)
+	if err != nil {
+		if errors.Is(err, errcode.SkipResponse) {
+			return
+		}
+		r.iResponse.Error(c, err)
+		return
+	}
+
+	r.iResponse.Success(c, out)
+}
+
+func (r *userRouter) Info_0(c *gin.Context) {
+	req := &LoginRequest{}
+
+	var ctx context.Context = c
+
+	out, err := r.iLogic.Info(ctx, req)
+	if err != nil {
+		if errors.Is(err, errcode.SkipResponse) {
+			return
+		}
+		r.iResponse.Error(c, err)
+		return
+	}
+
+	r.iResponse.Success(c, out)
+}
+
+func (r *userRouter) Codes_0(c *gin.Context) {
+	req := &LoginRequest{}
+
+	var ctx context.Context = c
+
+	out, err := r.iLogic.Codes(ctx, req)
+	if err != nil {
+		if errors.Is(err, errcode.SkipResponse) {
+			return
+		}
+		r.iResponse.Error(c, err)
+		return
+	}
+
+	r.iResponse.Success(c, out)
+}
+
+func (r *userRouter) Logout_0(c *gin.Context) {
+	req := &LoginRequest{}
+
+	var ctx context.Context = c
+
+	out, err := r.iLogic.Logout(ctx, req)
 	if err != nil {
 		if errors.Is(err, errcode.SkipResponse) {
 			return

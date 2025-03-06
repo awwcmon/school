@@ -22,18 +22,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service school {
-  // Login 登录注释
-  rpc Login(LoginRequest) returns (LoginReply) {
-    option (google.api.http) = {
-      post: "/api/v1/login"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "登录",
-      description: "使用邮箱登录",
-    };
-
-  }
   rpc Hello(HelloRequest) returns (HelloReply){
     option (google.api.http) = {
       get: "/api/v1/hello"
@@ -43,26 +31,7 @@ service school {
       description: "hello",
     };
   }
-
-  // 注意：下面两类rpc会被忽略生成http相关代码
-  //    1. 在rpc没有设置google.api.http，例如 SayHi
-  //    2. rpc属于stream类型，例如 ClientSteam、ServerSteam、BidiSteam
-
-  //rpc SayHi(HelloRequest) returns (HelloReply) {}
-  //rpc ClientSteam(stream HelloRequest) returns (HelloReply) {}
-  //rpc ServerSteam(HelloRequest) returns (stream HelloReply) {}
-  //rpc BidiSteam(stream HelloRequest) returns (stream HelloReply) {}
 }
-
-message LoginRequest {
-  string email = 1;
-  string password = 2;
-}
-
-message LoginReply {
-  string token = 1;
-}
-
 message HelloRequest {
   string name = 1;
 }

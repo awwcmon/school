@@ -12,11 +12,6 @@ var (
 	schoolNO       = 65
 	schoolName     = "school"
 	schoolBaseCode = errcode.HCode(schoolNO)
-
-	ErrLoginUser   = errcode.NewError(schoolBaseCode+1, "failed to Login "+schoolName)
-	ErrHelloUser   = errcode.NewError(schoolBaseCode+2, "failed to Hello "+schoolName)
-	ErrLoginSchool = errcode.NewError(schoolBaseCode+3, "failed to Login "+schoolName)
 	ErrHelloSchool = errcode.NewError(schoolBaseCode+4, "failed to Hello "+schoolName)
-
 	// error codes are globally unique, adding 1 to the previous error code
 )
